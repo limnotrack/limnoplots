@@ -1,0 +1,24 @@
+Package: limnoplots
+Title: Ultra-Fast Plotting and Visualisation for Limnological Buoy and Profiler Data
+Version: 0.1.0
+Authors@R: person("Chris", "McBride", role = c("aut", "cre"),
+    email = "chris@limnotrack.com")
+Description: Fast, standardised plotting tools for profiling buoy, fixed-depth
+    sensor, and meteorological data. Uses scattermore for rendering millions of
+    points in seconds. Provides consistent multi-panel dot plots coloured by
+    depth, raw/QC comparison overlays, met data panels, device timeline plots,
+    and profile-by-profile visualisation. Designed for the wqprofiler data
+    pipeline but works with any data frame of profiler/buoy data.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Imports:
+    ggplot2,
+    dplyr,
+    patchwork,
+    scales
+Suggests:
+    scattermore,
+    lubridate,
+    viridis
+Config/roxygen2/version: 8.1.0
