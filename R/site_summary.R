@@ -26,7 +26,7 @@ lp_site_summary <- function(raw, qc = NULL, site = "Site",
   # --- Raw profile dots ---
   if ("pro" %in% names(raw) && nrow(raw$pro) > 0) {
     cat("  Plotting raw profiles...\n")
-    p_raw <- lp_dots(raw$pro, vars = vars_pro, max_depth = max_depth,
+    p_raw <- profiler_dots(raw$pro, vars = vars_pro, max_depth = max_depth,
                       title = paste(site, "\u2014 Raw profiles"))
     if (show) print(p_raw)
     ggplot2::ggsave(file.path(out_dir, paste0(site, "_dots_raw.png")),
@@ -37,7 +37,7 @@ lp_site_summary <- function(raw, qc = NULL, site = "Site",
   # --- QC profile dots with raw underlay ---
   if (!is.null(qc) && "pro" %in% names(qc) && nrow(qc$pro) > 0) {
     cat("  Plotting QC profiles...\n")
-    p_qc <- lp_dots_qc(qc$pro, raw$pro, vars = vars_pro, max_depth = max_depth,
+    p_qc <- profiler_dots_qc(qc$pro, raw$pro, vars = vars_pro, max_depth = max_depth,
                          title = paste(site, "\u2014 QC profiles (raw in grey)"))
     if (show) print(p_qc)
     ggplot2::ggsave(file.path(out_dir, paste0(site, "_dots_qc.png")),

@@ -23,13 +23,13 @@
 #' @examples
 #' \dontrun{
 #' raw <- readRDS("data/raw/Okataina.rds")
-#' lp_dots(raw$pro, title = "Okataina — Raw")
+#' profiler_dots(raw$pro, title = "Okataina — Raw")
 #' }
-lp_dots <- function(pro, vars = NULL,
+profiler_dots <- function(pro, vars = NULL,
                     col_datetime = "DateTime", col_depth = "DptSns",
                     title = NULL, xlim = NULL, fixed_x = TRUE,
                     quantile_trim = c(0.001, 0.999),
-                    max_depth = NULL, point_size = 0.3, alpha = 0.5,
+                    max_depth = NULL, pointsize = 2, alpha = 0.6,
                     ncol = 1) {
 
   defaults <- lp_defaults("profile")
@@ -70,7 +70,7 @@ lp_dots <- function(pro, vars = NULL,
 
     p <- ggplot2::ggplot(d, ggplot2::aes(x = dt, y = value, colour = depth)) +
       .fast_points(ggplot2::aes(x = dt, y = value, colour = depth),
-                   data = d, size = point_size, alpha = alpha) +
+                   data = d, pointsize = pointsize, alpha = alpha) +
       .depth_colour() +
       ggplot2::labs(x = NULL, y = .var_label(v)) +
       .lp_theme()
@@ -113,13 +113,13 @@ lp_dots <- function(pro, vars = NULL,
 #' @param ncol Layout columns
 #' @return A patchwork plot object
 #' @export
-lp_dots_qc <- function(pro_qc, pro_raw, vars = NULL,
+profiler_dots_qc <- function(pro_qc, pro_raw, vars = NULL,
                         col_datetime = "DateTime", col_depth = "DptSns",
                         title = NULL, xlim = NULL, fixed_x = TRUE,
                         quantile_trim = c(0.001, 0.999),
                         max_depth = NULL,
                         raw_colour = "grey80", raw_alpha = 0.3,
-                        point_size = 0.3, alpha = 0.5,
+                        pointsize = 2, alpha = 0.6,
                         ncol = 1) {
 
   defaults <- lp_defaults("profile")
@@ -173,7 +173,7 @@ lp_dots_qc <- function(pro_qc, pro_raw, vars = NULL,
     if (has_raw) {
       p <- ggplot2::ggplot() +
         .fast_points(ggplot2::aes(x = dt, y = value), data = d_raw,
-                     size = point_size * 0.7, alpha = raw_alpha, colour = raw_colour) +
+                     pointsize = max(1, pointsize - 1), alpha = raw_alpha, colour = raw_colour) +
         .fast_points(ggplot2::aes(x = dt, y = value, colour = depth), data = d_qc,
                      size = point_size, alpha = alpha)
     } else {

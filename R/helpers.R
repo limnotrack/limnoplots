@@ -1,14 +1,28 @@
 #' Fast scatter point layer
 #'
 #' Uses scattermore if available for speed, falls back to geom_point.
+#' Pointsize is tuned for the depth-coloured dot plot aesthetic:
+#' slightly larger than minimal, with moderate transparency so
+#' overlapping depths blend nicely.
+#'
+#' @param mapping aes() mapping
+#' @param data data frame
+#' @param pointsize scattermore pointsize in pixels (default 2)
+#' @param alpha transparency (default 0.6)
+#' @param pixels scattermore pre-render resolution c(width, height).
+#'   NULL = auto from device.
+#' @param ... passed to geom
 #' @keywords internal
-.fast_points <- function(mapping, data, size = 0.3, alpha = 0.5, ...) {
+.fast_points <- function(mapping, data, pointsize = 2, alpha = 0.6,
+                         pixels = NULL, ...) {
   if (requireNamespace("scattermore", quietly = TRUE)) {
-    scattermore::geom_scattermore(mapping = mapping, data = data,
-                                  pointsize = size * 3, alpha = alpha, ...)
+    args <- list(mapping = mapping, data = data,
+                 pointsize = pointsize, alpha = alpha)
+    if (!is.null(pixels)) args$pixels <- pixels
+    do.call(scattermore::geom_scattermore, c(args, list(...)))
   } else {
     ggplot2::geom_point(mapping = mapping, data = data,
-                         size = size, alpha = alpha, ...)
+                         size = pointsize / 3, alpha = alpha, ...)
   }
 }
 
@@ -33,6 +47,7 @@
       panel.background  = ggplot2::element_rect(fill = "grey92", colour = NA),
       panel.grid.major  = ggplot2::element_blank(),
       panel.grid.minor  = ggplot2::element_blank(),
+      plot.title        = ggplot2::element_text(hjust = 0.5),
       legend.key.height = ggplot2::unit(0.4, "cm"),
       legend.key.width  = ggplot2::unit(0.8, "cm"),
       legend.position   = "right"

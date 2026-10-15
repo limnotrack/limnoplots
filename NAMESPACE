@@ -1,5 +1,5 @@
-export(lp_dots)
-export(lp_dots_qc)
+export(profiler_dots)
+export(profiler_dots_qc)
 export(lp_met)
 export(lp_met_qc)
 export(lp_profile)
