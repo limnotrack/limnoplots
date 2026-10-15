@@ -85,11 +85,12 @@ lp_dots <- function(pro, vars = NULL,
   plots <- Filter(Negate(is.null), plots)
   if (length(plots) == 0) return(ggplot2::ggplot())
 
-  p <- patchwork::wrap_plots(plots, ncol = ncol)
+  p <- patchwork::wrap_plots(plots, ncol = ncol) +
+    patchwork::plot_layout(guides = "collect")
   if (!is.null(title)) {
     p <- p + patchwork::plot_annotation(title = title)
   }
-  p
+  p &  ggplot2::theme(legend.position = "right")
 }
 
 
@@ -192,7 +193,8 @@ lp_dots_qc <- function(pro_qc, pro_raw, vars = NULL,
   plots <- Filter(Negate(is.null), plots)
   if (length(plots) == 0) return(ggplot2::ggplot())
 
-  p <- patchwork::wrap_plots(plots, ncol = ncol)
+  p <- patchwork::wrap_plots(plots, ncol = ncol) +
+    patchwork::plot_layout(guides = "collect")
   if (!is.null(title)) p <- p + patchwork::plot_annotation(title = title)
-  p
+  p & ggplot2::theme(legend.position = "right")
 }
