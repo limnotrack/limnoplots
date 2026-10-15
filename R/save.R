@@ -1,23 +1,30 @@
-#' Fast PNG save using ragg
+#' Fast PNG save
 #'
-#' Wrapper around ggsave that uses ragg::agg_png for faster rendering.
-#' Falls back to standard ggsave if ragg is not available.
+#' Uses ragg::agg_png for faster rendering when available.
+#' For dot plots with scattermore, this is significantly faster than
+#' the default cairo PNG device.
 #'
 #' @param filename Output path
 #' @param plot ggplot object
 #' @param width Width in inches (default 14)
 #' @param height Height in inches (default 14)
 #' @param dpi Resolution (default 150)
-#' @param ... Additional arguments passed to ggsave
+#' @param bg Background colour (default "white")
+#' @param ... Additional arguments
 #' @return Invisibly, the filename
 #' @keywords internal
-.fast_save <- function(filename, plot, width = 14, height = 14, dpi = 150, ...) {
+.fast_save <- function(filename, plot, width = 14, height = 14, dpi = 150,
+                       bg = "white", ...) {
   if (requireNamespace("ragg", quietly = TRUE)) {
-    ragg::agg_png(filename, width = width, height = height, units = "in", res = dpi)
+    ragg::agg_png(filename, width = width, height = height,
+                   units = "in", res = dpi, background = bg)
+    on.exit(grDevices::dev.off(), add = TRUE)
     print(plot)
-    grDevices::dev.off()
   } else {
-    ggplot2::ggsave(filename, plot, width = width, height = height, dpi = dpi, ...)
+    grDevices::png(filename, width = width, height = height,
+                    units = "in", res = dpi, bg = bg, type = "cairo")
+    on.exit(grDevices::dev.off(), add = TRUE)
+    print(plot)
   }
   invisible(filename)
 }
