@@ -19,6 +19,8 @@ Imports:
     scales
 Suggests:
     scattermore,
+    data.table,
+    ragg,
     lubridate,
     viridis
 Config/roxygen2/version: 8.1.0
